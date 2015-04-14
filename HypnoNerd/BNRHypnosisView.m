@@ -11,10 +11,24 @@
 @interface BNRHypnosisView ()
 
 @property (nonatomic, strong) UIColor *circleColor;
+@property (nonatomic) UISegmentedControl *segmentedControl;
 
 @end
 
 @implementation BNRHypnosisView
+
+- (void)segmentedControlAction:(UISegmentedControl *)segment
+{
+    if (segment.selectedSegmentIndex == 0) // Red
+    {
+        self.circleColor = [UIColor redColor];
+    } else if (segment.selectedSegmentIndex == 1) { // Green
+        self.circleColor = [UIColor greenColor];
+    } else { // Blue
+        self.circleColor = [UIColor blueColor];
+    }
+}
+
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -23,6 +37,15 @@
         // All BNRHypnosisViews start with a clear background color
         self.backgroundColor = [UIColor clearColor];
         self.circleColor = [UIColor lightGrayColor];
+        self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Red", @"Green", @"Blue"]];
+        CGFloat x = CGRectGetMinX(frame);
+        CGFloat y = CGRectGetMaxY(frame)-(CGRectGetHeight(frame)/8.0) - 50;
+        CGFloat width = CGRectGetWidth(frame);
+        CGFloat height = (CGRectGetHeight(frame)/8.0);
+        
+        self.segmentedControl.frame = CGRectMake(x, y, width, height);
+        [self.segmentedControl addTarget:self action:@selector(segmentedControlAction:) forControlEvents: UIControlEventValueChanged];
+        [self addSubview:self.segmentedControl];
     }
     return self;
 }
